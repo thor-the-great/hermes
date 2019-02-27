@@ -2,6 +2,7 @@ package hermes;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hermes.dto.MessageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -22,10 +23,10 @@ public class QueueProducer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void produce(String notification) throws Exception {
+    public void produce(MessageDTO dto) throws Exception {
         logger.info("Storing notification...");
         rabbitTemplate.setExchange(fanoutExchange);
-        rabbitTemplate.convertAndSend(new ObjectMapper().writeValueAsString(notification));
+        rabbitTemplate.convertAndSend(dto);
         logger.info("Notification stored in queue sucessfully");
     }
 }
